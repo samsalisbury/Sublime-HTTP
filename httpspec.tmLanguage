@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>httpspec</string>
+	</array>
+	<key>name</key>
+	<string>HTTP Spec</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>begin</key>
+			<string>^((HEAD|GET|DELETE|PUT|PATCH|POST)\,?)+\s(\/[-\w]+)+(\?\w+=\w+)*</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other.method.httpspec</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>^(?=\d\d\d)</string>
+			<key>name</key>
+			<string>support.function.request.httpspec</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#header</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
+	<key>repository</key>
+	<dict>
+		<key>header</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>^([-\w])+(\:)\s([\w/]+)(\; [\w=-]+)?</string>
+					<key>name</key>
+					<string>string.unquoted.header.httpspec</string>
+				</dict>
+			</array>
+		</dict>
+		<key>method</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>(HEAD|GET|DELETE|PUT|PATCH|POST)</string>
+					<key>name</key>
+					<string>keyword.other.method.httpspec</string>
+				</dict>
+			</array>
+		</dict>
+		<key>methodlist</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>\,</string>
+					<key>end</key>
+					<string>\s</string>
+					<key>include</key>
+					<string>#method</string>
+					<key>name</key>
+					<string>keyword.other.methodlist.httpspec</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>scopeName</key>
+	<string>source.httpspec</string>
+	<key>uuid</key>
+	<string>7bb6ff35-8b8a-4480-91ec-20f2d3fcba9a</string>
+</dict>
+</plist>

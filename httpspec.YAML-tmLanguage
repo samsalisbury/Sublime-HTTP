@@ -1,0 +1,31 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: HTTP Spec
+scopeName: source.httpspec
+fileTypes: [httpspec]
+uuid: 7bb6ff35-8b8a-4480-91ec-20f2d3fcba9a
+
+patterns:
+- name: support.function.request.httpspec
+  begin: ^((HEAD|GET|DELETE|PUT|PATCH|POST)\,?)+\s(\/[-\w]+)+(\?\w+=\w+)*
+  beginCaptures:
+     '0': {name: keyword.other.method.httpspec}
+  end: ^(?=\d\d\d)
+  patterns:
+  - include: '#header'
+
+repository:
+  methodlist:
+    patterns:
+    - name: keyword.other.methodlist.httpspec
+      begin: \,
+      end: \s
+      include: '#method'
+  method:
+    patterns:
+    - name: keyword.other.method.httpspec
+      match: (HEAD|GET|DELETE|PUT|PATCH|POST)
+  header:
+    patterns:
+    - name: string.unquoted.header.httpspec
+      match: ^([-\w])+(\:)\s([\w/]+)(\; [\w=-]+)?
