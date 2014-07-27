@@ -11,52 +11,126 @@
 	<key>patterns</key>
 	<array>
 		<dict>
-			<key>begin</key>
-			<string>^((HEAD|GET|DELETE|PUT|PATCH|POST)\,?)+\s(\/[-\w]+)+(\?\w+=\w+)*</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>0</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.other.method.httpspec</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>^(?=\d\d\d)</string>
 			<key>name</key>
-			<string>support.function.request.httpspec</string>
+			<string>meta.request.httpspec</string>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#header</string>
+					<string>#request</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>^$</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#response</string>
 				</dict>
 			</array>
 		</dict>
 	</array>
 	<key>repository</key>
 	<dict>
+		<key>ampersand</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>(?&lt;!\&amp;)\&amp;(?!\&amp;)</string>
+					<key>name</key>
+					<string>support.function.ampersand.httpspec</string>
+				</dict>
+			</array>
+		</dict>
+		<key>closingbracket</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>keyword.other.multiplexend.httpspec</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\]</string>
+				</dict>
+			</array>
+		</dict>
+		<key>comma</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\,</string>
+					<key>name</key>
+					<string>keyword.other.comma.httpspec.test</string>
+				</dict>
+			</array>
+		</dict>
+		<key>emptyline</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>^\s*$</string>
+				</dict>
+			</array>
+		</dict>
+		<key>equals</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\=</string>
+					<key>name</key>
+					<string>support.function.keyvaluepairseparator.httpspec</string>
+				</dict>
+			</array>
+		</dict>
 		<key>header</key>
 		<dict>
 			<key>patterns</key>
 			<array>
 				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>variable.parameter.headername.httpspec</string>
+						</dict>
+					</dict>
 					<key>match</key>
-					<string>^([-\w])+(\:)\s([\w/]+)(\; [\w=-]+)?</string>
+					<string>^([a-zA-Z\-_]+\:)\s(.*)$</string>
 					<key>name</key>
-					<string>string.unquoted.header.httpspec</string>
+					<string>string.unquoted.uri.httpspec</string>
 				</dict>
 			</array>
 		</dict>
-		<key>method</key>
+		<key>invalidcomma</key>
 		<dict>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>match</key>
-					<string>(HEAD|GET|DELETE|PUT|PATCH|POST)</string>
+					<string>^\,|\,(?=\s)</string>
 					<key>name</key>
-					<string>keyword.other.method.httpspec</string>
+					<string>invalid.illegal.comma.httpspec</string>
+				</dict>
+			</array>
+		</dict>
+		<key>jsonblock</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.json</string>
 				</dict>
 			</array>
 		</dict>
@@ -65,14 +139,276 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>begin</key>
-					<string>\,</string>
-					<key>end</key>
-					<string>\s</string>
 					<key>include</key>
-					<string>#method</string>
+					<string>#methodname</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#invalidcomma</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#comma</string>
+				</dict>
+			</array>
+		</dict>
+		<key>methodname</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>(?:\b)(OPTIONS|HEAD|GET|DELETE|PUT|PATCH|POST)</string>
 					<key>name</key>
-					<string>keyword.other.methodlist.httpspec</string>
+					<string>keyword.other.method.httpspec</string>
+				</dict>
+			</array>
+		</dict>
+		<key>multiplex</key>
+		<dict>
+			<key>begin</key>
+			<string>(\[)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\]</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#uripart</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#comma</string>
+				</dict>
+			</array>
+		</dict>
+		<key>namevaluepair</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#uriqueryname</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#equals</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#uriqueryvalue</string>
+				</dict>
+			</array>
+		</dict>
+		<key>openingbracket</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\[</string>
+					<key>name</key>
+					<string>keyword.other.multiplexstart.httpspec</string>
+				</dict>
+			</array>
+		</dict>
+		<key>questionmark</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\?</string>
+					<key>name</key>
+					<string>support.function.queryseparator.httpspec</string>
+				</dict>
+			</array>
+		</dict>
+		<key>request</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>^(?=OPTIONS|HEAD|GET|DELETE|PUT|PATCH|POST)</string>
+					<key>end</key>
+					<string>^(?=\d\d\d)</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#requestline</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#header</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#jsonblock</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>requestline</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#methodlist</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#uri</string>
+				</dict>
+			</array>
+		</dict>
+		<key>response</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#statusline</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#header</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#jsonblock</string>
+				</dict>
+			</array>
+		</dict>
+		<key>statusline</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>constant.language.statustext.httpspec</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>^(\d\d\d)\s(.*)$</string>
+				</dict>
+			</array>
+		</dict>
+		<key>uri</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#uripath</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#multiplex</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#questionmark</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#uriquery</string>
+				</dict>
+			</array>
+		</dict>
+		<key>uripart</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>([a-bA-B0-9\-_/]+)</string>
+				</dict>
+			</array>
+		</dict>
+		<key>uripath</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(?:\s)\/</string>
+					<key>end</key>
+					<string>(?:$)</string>
+					<key>name</key>
+					<string>support.function.httpspec</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#uripart</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#multiplex</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>uriquery</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#namevaluepair</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#ampersand</string>
+				</dict>
+			</array>
+		</dict>
+		<key>uriqueryname</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>(?&lt;=[?&amp;])([^=&amp;])+</string>
+					<key>name</key>
+					<string>support.function.uriqueryname.httpspec</string>
+				</dict>
+			</array>
+		</dict>
+		<key>uriqueryvalue</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>(?&lt;=\=)([^=&amp;]+)</string>
+					<key>name</key>
+					<string>support.function.uriqueryvalue.httpspec</string>
 				</dict>
 			</array>
 		</dict>
