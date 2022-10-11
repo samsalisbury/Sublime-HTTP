@@ -1,6 +1,7 @@
 name: Syntax Tests
 
 on:
+  workflow_dispatch: { }
   push:
     paths:
       - 'httpspec.YAML-tmLanguage'
