@@ -51,8 +51,6 @@
 				<dict>
 					<key>name</key>
 					<string>keyword.other.multiplexend.httpspec</string>
-				</dict>
-				<dict>
 					<key>match</key>
 					<string>\]</string>
 				</dict>
