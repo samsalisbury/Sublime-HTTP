@@ -1,0 +1,30 @@
+name: Syntax Tests
+
+on:
+  workflow_dispatch: { }
+  push:
+    paths:
+      - 'httpspec.YAML-tmLanguage'
+      - 'httpspec.tmLanguage'
+  pull_request:
+    paths:
+      - 'httpspec.YAML-tmLanguage'
+      - 'httpspec.tmLanguage'
+
+jobs:
+  syntax_tests:
+    name: Syntax Tests (${{ matrix.build }})
+    strategy:
+      matrix:
+        include:
+          - build: latest  # This is the default
+            # packages: master  # If you depend on a default syntax definition
+          - build: 3210  # Latest known ST3 build with a test binary
+            # packages: st3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: SublimeText/syntax-test-action@v2
+        with:
+          build: ${{ matrix.build }}
+          # default_packages: ${{ matrix.packages }}
