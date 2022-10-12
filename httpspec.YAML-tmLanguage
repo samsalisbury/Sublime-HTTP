@@ -45,7 +45,7 @@ repository:
 
   statusline:
     patterns:
-    - match: ^(\d\d\d)\s(.*)$
+    - match: ^(HTTP/(?:1\.1|2|3)\s)?(\d\d\d)\s(.*)$
       captures:
         '0': {name: constant.language.statustext.httpspec}
 
