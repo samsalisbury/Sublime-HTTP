@@ -29,7 +29,7 @@ repository:
   header:
     patterns:
     - name: string.unquoted.uri.httpspec
-      match: ^([a-zA-Z\-_]+\:)\s(.*)$
+      match: ^([^()<>@,;:\\"{} \t\x00-\x1F\x7F]+\:)\s(.*)$
       captures:
         '1': {name: variable.parameter.headername.httpspec}
 

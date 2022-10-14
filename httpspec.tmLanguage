@@ -104,7 +104,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>^([a-zA-Z\-_]+\:)\s(.*)$</string>
+					<string>^([^()&lt;&gt;@,;:\\"{} \t\x00-\x1F\x7F]+\:)\s(.*)$</string>
 					<key>name</key>
 					<string>string.unquoted.uri.httpspec</string>
 				</dict>
