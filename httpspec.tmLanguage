@@ -247,7 +247,7 @@
 					<string>^(?=ACL|BASELINE-CONTROL|BIND|CHECKIN|CHECKOUT|CONNECT|COPY|DELETE|GET|HEAD|LABEL|LINK|LOCK|MERGE|MKACTIVITY|MKCALENDAR|MKCOL|MKREDIRECTREF|MKWORKSPACE|MOVE|OPTIONS|ORDERPATCH|PATCH|POST|PRI|PROPFIND|PROPPATCH|PUT|REBIND|REPORT|SEARCH|TRACE|UNBIND|UNCHECKOUT|UNLINK|UNLOCK|UPDATE|UPDATEREDIRECTREF|VERSION-CONTROL
 )</string>
 					<key>end</key>
-					<string>^(?=\d\d\d)</string>
+					<string>^(?=\d\d\d|HTTP)</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -312,7 +312,19 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>^(HTTP\/(?:1\.1|2|3)\s)?(\d\d\d)\s(.*)$</string>
+					<string>^(\d\d\d)\s(.*)$</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>constant.language.statustext.httpspec</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>^HTTP/(1\.1|2|3)\s(\d\d\d)\s(.*)$</string>
 				</dict>
 			</array>
 		</dict>
