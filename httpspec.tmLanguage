@@ -334,6 +334,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#uriabsolute</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#uripath</string>
 				</dict>
 				<dict>
@@ -347,6 +351,31 @@
 				<dict>
 					<key>include</key>
 					<string>#uriquery</string>
+				</dict>
+			</array>
+		</dict>
+		<key>uriabsolute</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(?:\s)(https?):\/\/((?:(?:[A-Za-z0-9\-]{1,63})\.)*(?:[A-Za-z0-9\-]{1,63}))</string>
+					<key>end</key>
+					<string>(?:$)</string>
+					<key>name</key>
+					<string>support.function.httpspec</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#uripart</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#multiplex</string>
+						</dict>
+					</array>
 				</dict>
 			</array>
 		</dict>

@@ -98,10 +98,20 @@ repository:
         match: ^\,|\,(?=\s)
   uri:
     patterns:
+    - include: '#uriabsolute'
     - include: '#uripath'
     - include: '#multiplex'
     - include: '#questionmark'
     - include: '#uriquery'
+
+  uriabsolute:
+    patterns:
+    - name: support.function.httpspec
+      begin: (?:\s)(https?):\/\/((?:(?:[A-Za-z0-9\-]{1,63})\.)*(?:[A-Za-z0-9\-]{1,63}))
+      end: (?:$)
+      patterns:
+      - include: '#uripart'
+      - include: '#multiplex'
 
   uripath:
     patterns:
