@@ -7,6 +7,8 @@ uuid: 7bb6ff35-8b8a-4480-91ec-20f2d3fcba9a
 
 patterns:
 - name: meta.request.httpspec
+  begin: ''
+  end: ''
   patterns:
   - include: '#request'
   - match: ^$

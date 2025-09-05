@@ -1,0 +1,126 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: HTTP Spec
+file_extensions:
+  - httpspec
+scope: source.httpspec
+contexts:
+  main:
+    - match: ""
+      push:
+        - meta_scope: meta.request.httpspec
+        - match: ""
+          pop: true
+        - include: request
+        - match: ^$
+        - include: response
+  ampersand:
+    - match: (?<!\&)\&(?!\&)
+      scope: support.function.ampersand.httpspec
+  closingbracket:
+    - match: '\]'
+      scope: keyword.other.multiplexend.httpspec
+  comma:
+    - match: \,
+      scope: keyword.other.comma.httpspec.test
+  emptyline:
+    - match: ^\s*$
+  equals:
+    - match: \=
+      scope: support.function.keyvaluepairseparator.httpspec
+  header:
+    - match: '^([^()<>@,;:\\"{} \t\x00-\x1F\x7F]+\:)\s(.*)$'
+      scope: string.unquoted.uri.httpspec
+      captures:
+        1: variable.parameter.headername.httpspec
+  invalidcomma:
+    - match: ^\,|\,(?=\s)
+      scope: invalid.illegal.comma.httpspec
+  jsonblock:
+    - include: scope:source.json
+  methodlist:
+    - include: methodname
+    - include: invalidcomma
+    - include: comma
+  methodname:
+    - match: (?:\b)(ACL|BASELINE-CONTROL|BIND|CHECKIN|CHECKOUT|CONNECT|COPY|DELETE|GET|HEAD|LABEL|LINK|LOCK|MERGE|MKACTIVITY|MKCALENDAR|MKCOL|MKREDIRECTREF|MKWORKSPACE|MOVE|OPTIONS|ORDERPATCH|PATCH|POST|PRI|PROPFIND|PROPPATCH|PUT|QUERY|REBIND|REPORT|SEARCH|TRACE|UNBIND|UNCHECKOUT|UNLINK|UNLOCK|UPDATE|UPDATEREDIRECTREF|VERSION-CONTROL)
+      scope: keyword.other.method.httpspec
+  multiplex:
+    - match: '(\[)'
+      captures:
+        0: keyword.other
+      push:
+        - match: '\]'
+          captures:
+            0: keyword.other
+          pop: true
+        - include: uripart
+        - include: comma
+  namevaluepair:
+    - include: uriqueryname
+    - include: equals
+    - include: uriqueryvalue
+  openingbracket:
+    - match: '\['
+      scope: keyword.other.multiplexstart.httpspec
+  questionmark:
+    - match: \?
+      scope: support.function.queryseparator.httpspec
+  request:
+    - match: |-
+        ^(?=ACL|BASELINE-CONTROL|BIND|CHECKIN|CHECKOUT|CONNECT|COPY|DELETE|GET|HEAD|LABEL|LINK|LOCK|MERGE|MKACTIVITY|MKCALENDAR|MKCOL|MKREDIRECTREF|MKWORKSPACE|MOVE|OPTIONS|ORDERPATCH|PATCH|POST|PRI|PROPFIND|PROPPATCH|PUT|QUERY|REBIND|REPORT|SEARCH|TRACE|UNBIND|UNCHECKOUT|UNLINK|UNLOCK|UPDATE|UPDATEREDIRECTREF|VERSION-CONTROL
+        )
+      push:
+        - match: ^(?=\d\d\d|HTTP)
+          pop: true
+        - include: requestline
+        - include: header
+        - include: jsonblock
+  requestline:
+    - include: methodlist
+    - include: uri
+  response:
+    - include: statusline
+    - include: header
+    - include: jsonblock
+  statusline:
+    - match: ^(\d\d\d)\s(.*)$
+      captures:
+        0: constant.language.statustext.httpspec
+    - match: ^HTTP/(1\.1|2|3)\s(\d\d\d)\s(.*)$
+      captures:
+        0: constant.language.statustext.httpspec
+  uri:
+    - include: uriabsolute
+    - include: uripath
+    - include: multiplex
+    - include: questionmark
+    - include: uriquery
+  uriabsolute:
+    - match: '(?:\s)(https?):\/\/((?:(?:[A-Za-z0-9\-]{1,63})\.)*(?:[A-Za-z0-9\-]{1,63}))'
+      push:
+        - meta_scope: support.function.httpspec
+        - match: (?:$)
+          pop: true
+        - include: uripart
+        - include: multiplex
+  uripart:
+    - match: '([a-bA-B0-9\-_/]+)'
+  uripath:
+    - match: (?:\s)\/
+      push:
+        - meta_scope: support.function.httpspec
+        - match: (?:$)
+          pop: true
+        - include: uripart
+        - include: multiplex
+  uriquery:
+    - include: namevaluepair
+    - include: ampersand
+  uriqueryname:
+    - match: "(?<=[?&])([^=&])+"
+      scope: support.function.uriqueryname.httpspec
+  uriqueryvalue:
+    - match: '(?<=\=)([^=&]+)'
+      scope: support.function.uriqueryvalue.httpspec

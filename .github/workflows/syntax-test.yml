@@ -6,10 +6,12 @@ on:
     paths:
       - 'httpspec.YAML-tmLanguage'
       - 'httpspec.tmLanguage'
+      - 'httpspec.sublime-syntax'
   pull_request:
     paths:
       - 'httpspec.YAML-tmLanguage'
       - 'httpspec.tmLanguage'
+      - 'httpspec.sublime-syntax'
 
 jobs:
   syntax_tests:
